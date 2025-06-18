@@ -93,6 +93,250 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
+    // Initialize particles.js
+    function initParticles() {
+        if (typeof particlesJS !== 'undefined') {
+            particlesJS('particles-js', {
+                "particles": {
+                    "number": {
+                        "value": 60,
+                        "density": {
+                            "enable": true,
+                            "value_area": 800
+                        }
+                    },
+                    "color": {
+                        "value": "#ffffff"
+                    },
+                    "shape": {
+                        "type": "circle",
+                        "stroke": {
+                            "width": 0,
+                            "color": "#000000"
+                        }
+                    },
+                    "opacity": {
+                        "value": 0.5,
+                        "random": true,
+                        "anim": {
+                            "enable": true,
+                            "speed": 1,
+                            "opacity_min": 0.1,
+                            "sync": false
+                        }
+                    },
+                    "size": {
+                        "value": 3,
+                        "random": true,
+                        "anim": {
+                            "enable": true,
+                            "speed": 2,
+                            "size_min": 0.1,
+                            "sync": false
+                        }
+                    },
+                    "line_linked": {
+                        "enable": true,
+                        "distance": 150,
+                        "color": "#ffffff",
+                        "opacity": 0.3,
+                        "width": 1
+                    },
+                    "move": {
+                        "enable": true,
+                        "speed": 1,
+                        "direction": "none",
+                        "random": true,
+                        "straight": false,
+                        "out_mode": "out",
+                        "bounce": false,
+                        "attract": {
+                            "enable": true,
+                            "rotateX": 600,
+                            "rotateY": 1200
+                        }
+                    }
+                },
+                "interactivity": {
+                    "detect_on": "canvas",
+                    "events": {
+                        "onhover": {
+                            "enable": true,
+                            "mode": "grab"
+                        },
+                        "onclick": {
+                            "enable": true,
+                            "mode": "push"
+                        },
+                        "resize": true
+                    },
+                    "modes": {
+                        "grab": {
+                            "distance": 140,
+                            "line_linked": {
+                                "opacity": 0.8
+                            }
+                        },
+                        "push": {
+                            "particles_nb": 4
+                        }
+                    }
+                },
+                "retina_detect": true
+            });
+        } else {
+            // Fallback if particles.js fails to load
+            console.log('Particles.js not loaded');
+            document.getElementById('particles-js').style.display = 'none';
+        }
+    }
+
+    // Hero text animation
+    function animateHeroText() {
+        const heroTitle = document.querySelector('.hero-title');
+        const heroSubtitle = document.querySelector('.hero-subtitle');
+        const ctaWrapper = document.querySelector('.cta-wrapper');
+
+        setTimeout(() => {
+            heroTitle.classList.add('animated');
+        }, 200);
+
+        setTimeout(() => {
+            heroSubtitle.classList.add('animated');
+        }, 600);
+
+        setTimeout(() => {
+            ctaWrapper.classList.add('animated');
+        }, 1000);
+    }
+
+    // Scroll animation for sections
+    function animateOnScroll() {
+        const sections = document.querySelectorAll('.section');
+        const windowHeight = window.innerHeight;
+        const scrollPosition = window.scrollY || window.pageYOffset;
+
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.offsetHeight;
+            const sectionId = section.getAttribute('id');
+
+            // If section is in viewport
+            if (scrollPosition > (sectionTop - windowHeight + 100)) {
+                section.classList.add('animated');
+
+                // Additional animations for specific sections
+                if (sectionId === 'gallery') {
+                    animateGalleryItems();
+                } else if (sectionId === 'plans') {
+                    animatePlanCards();
+                } else if (sectionId === 'testimonials') {
+                    animateTestimonials();
+                } else if (sectionId === 'trainers') {
+                    animateTrainers();
+                }
+            }
+        });
+    }
+
+    // Gallery item animation
+    function animateGalleryItems() {
+        const galleryItems = document.querySelectorAll('.gallery-item');
+        galleryItems.forEach((item, index) => {
+            setTimeout(() => {
+                item.style.opacity = '1';
+                item.style.transform = 'scale(1)';
+            }, index * 100);
+        });
+    }
+
+    // Plan cards animation
+    function animatePlanCards() {
+        const planCards = document.querySelectorAll('.plan-card');
+        planCards.forEach((card, index) => {
+            setTimeout(() => {
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            }, index * 200);
+        });
+    }
+
+    // Testimonial animation
+    function animateTestimonials() {
+        const testimonials = document.querySelectorAll('.testimonial-card');
+        testimonials.forEach((testimonial, index) => {
+            setTimeout(() => {
+                testimonial.style.opacity = '1';
+                testimonial.style.transform = 'translateY(0) rotate(0)';
+            }, index * 300);
+        });
+    }
+
+    // Trainer animation
+    function animateTrainers() {
+        const trainers = document.querySelectorAll('.trainer-card');
+        trainers.forEach((trainer, index) => {
+            setTimeout(() => {
+                trainer.style.opacity = '1';
+                trainer.style.transform = 'translateY(0)';
+            }, index * 200);
+        });
+    }
+
+    // Form submission handling
+    const contactForm = document.getElementById('form');
+    if (contactForm) {
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Simple validation
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
+            
+            if (!name || !email || !message) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+            
+            // In a real implementation, you would send this data to a server
+            // For this demo, we'll just show a success message
+            alert('Thank you for your message! We will get back to you soon.');
+            contactForm.reset();
+        });
+    }
+
+    // Debounce function for scroll events
+    function debounce(func, wait = 10, immediate = true) {
+        let timeout;
+        return function() {
+            const context = this, args = arguments;
+            const later = function() {
+                timeout = null;
+                if (!immediate) func.apply(context, args);
+            };
+            const callNow = immediate && !timeout;
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+            if (callNow) func.apply(context, args);
+        };
+    }
+
+    // Initialize everything
+    function init() {
+        animateHeroText();
+        initParticles();
+        
+        // Initial check in case sections are already visible
+        animateOnScroll();
+        
+        // Add scroll event listener with debounce
+        window.addEventListener('scroll', debounce(animateOnScroll));
+    }
+
+    // Call init after everything is loaded
+    window.addEventListener('load', init);
+
     // Add lightbox styles dynamically
     const lightboxStyles = document.createElement('style');
     lightboxStyles.textContent = `
@@ -143,27 +387,4 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     `;
     document.head.appendChild(lightboxStyles);
-    
-    // Form submission handling
-    const contactForm = document.getElementById('form');
-    if (contactForm) {
-        contactForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Simple validation
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const message = document.getElementById('message').value;
-            
-            if (!name || !email || !message) {
-                alert('Please fill in all required fields.');
-                return;
-            }
-            
-            // In a real implementation, you would send this data to a server
-            // For this demo, we'll just show a success message
-            alert('Thank you for your message! We will get back to you soon.');
-            contactForm.reset();
-        });
-    }
 });
